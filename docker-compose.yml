@@ -1,0 +1,40 @@
+version: "3.9"
+# docker-composeのバージョン
+services:
+# services配下にコンテナを定義（今回はwebとdbのみ）
+  db:
+    image: postgres
+    # 利用するイメージの指定（今回はPostgreSQL）
+    volumes:
+      - ./tmp/db:/var/lib/postgresql/data
+      # データを永続的に保存する場所を指定
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      # PostgreSQLに関する環境変数の設定
+  web:
+    build: .
+    # Dockerfileがあるディレクトリを指定
+    command: bash -c "rm -f tmp/pids/server.pid && bundle exec rails s -p 3000 -b '0.0.0.0'"
+    # Railsサーバーの起動（既にserver.pidファイルが存在していた場合は削除）
+    volumes:
+      - .:/docker_demo
+      # データを永続的に保存する場所を指定
+    ports:
+      - "3000:3000"
+      # ポート番号
+    depends_on:
+      - db
+      # コンテナの実行順序の指定（今回はdb起動→web起動）
+
+  pgadmin:
+    image: dpage/pgadmin4
+    restart: always
+    ports:
+      - "8888:80"
+    environment:
+      TZ: Asia/Tokyo
+      PGADMIN_DEFAULT_EMAIL: 'aaa@bbb.ccc'
+      PGADMIN_DEFAULT_PASSWORD: 'pgpassword'
+    depends_on:
+      - db
