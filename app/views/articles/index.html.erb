@@ -1,0 +1,45 @@
+
+<div class="card">
+
+  <div class="card-header">
+    <ul class="nav nav-pills card-header-pills">
+      <li class="nav-item">
+        <%= link_to "Article一覧", articles_path ,class: 'nav-link' %>
+      </li>
+      <li class="nav-item">
+        <%= link_to "登録", new_article_path ,class: 'nav-link' %>
+      </li>
+    </ul>
+  </div>
+
+  <div class="card-body">
+    
+    <h2 class="card-title">Articles一覧</h1>
+    
+    <div class="table-responsive-sm">
+      <table class="table align-middle table-light table-bordered table-hover table-sm">
+        <thead class="table-info">
+          <tr>
+            <td>タイトル</td>
+            <td>概要</td>
+            <td></td>
+          </tr>
+        </thead>
+        <tbody>
+          <% @articles.each do |article| %>
+          <tr>
+            <td>
+              <%= link_to article.title , article%>
+            </td>
+            <td><%= article.body %></td>
+            <td><%= link_to "修正", edit_article_path(article), class: 'btn btn-sm btn-warning' %></td>
+          </tr>
+          <% end %>
+        <tbody>
+      </table>
+    </div>
+
+  </div>
+
+</div>
+

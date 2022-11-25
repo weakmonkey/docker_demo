@@ -23,6 +23,9 @@ services:
     ports:
       - "3000:3000"
       # ポート番号
+    environment:
+      TZ: Asia/Tokyo
+      # railsの標準時間を日本用に変更
     depends_on:
       - db
       # コンテナの実行順序の指定（今回はdb起動→web起動）
